@@ -41,10 +41,10 @@ def singleDEMDown(url, saveFolder=None, ipPort=None):
     filePath = fileName
     if saveFolder:
         filePath = os.path.join(saveFolder, fileName)
-        tempfilePath = fileName + ".temp"
+    tempfilePath = filePath + ".temp"
 
     if os.path.exists(filePath):
-        print(f"{fileName}文件已存在，跳过下载")
+        print(f"{filePath}文件已存在，跳过下载")
         return True
     try:
         res = requests.get(url=url, stream=True, proxies=proxies)
@@ -63,7 +63,8 @@ def singleDEMDown(url, saveFolder=None, ipPort=None):
             res.close()
             return True
         else:
-            print(f"{filePath}===下载失败，可能不存该产品（属于正常现象）")
+            raise ValueError("status!=200")
+
     except:
         singleDEMDown(url, saveFolder, ipPort)
 
@@ -93,11 +94,20 @@ if __name__ == "__main__":
     if os.path.exists(saveFolder) is False:
         os.makedirs(saveFolder)
 
+    cmd = f"dem.py -k -f -a stitch -b {min_range.latInt} {max_range.latInt} {min_range.lonInt} {max_range.lonInt} -r -s 1 -c"
+    with open(os.path.join(saveFolder, "stitchDem.sh"), "w") as f:
+        f.write(cmd)
+
+    proxies = {"http://": IPPort, "https://": IPPort} if IPPort else None
+    result = requests.get("https://step.esa.int/auxdata/dem/SRTMGL1/", proxies=proxies)
+
     lls = createLonLat(min_range, max_range)  # 创建一系列经纬度表
-    urls = [
-        f"http://step.esa.int/auxdata/dem/SRTMGL1/{ll.getStr()[1]}{ll.getStr()[0]}.SRTMGL1.hgt.zip"
-        for ll in lls
-    ]
+    urls = []
+    for ll in lls:
+        name = f"{ll.getStr()[1]}{ll.getStr()[0]}.SRTMGL1.hgt.zip"
+        if name in result.text:
+            urls.append(f"http://step.esa.int/auxdata/dem/SRTMGL1/{name}")
+
     saveList(
         urls,
         os.path.join(
@@ -110,6 +120,6 @@ if __name__ == "__main__":
     for url in urls:
         print(url)
         # os.system(f"wget -P {saveFolder} {url}")  # todo 使用wget下载
-        if singleDEMDown(url, saveFolder, IPPort):  # 使用脚本下载
-            count += 1
-    print(f"共计下载了{count}个文件")
+        singleDEMDown(url, saveFolder, IPPort)  # 使用脚本下载
+    print("拼接命令：")
+    print(cmd)
