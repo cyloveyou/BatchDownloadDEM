@@ -85,10 +85,10 @@ def saveList(myList: list, savePath) -> None:
 
 if __name__ == "__main__":
     # 参数配置
-    min_range = LonLat(115, 22)  # todo 设置经度最小和纬度最小
-    max_range = LonLat(119, 27)  # todo 设置经度最大和纬度最大
+    min_range = LonLat(100, 37)  # todo 设置经度最小和纬度最小
+    max_range = LonLat(102, 38)  # todo 设置经度最大和纬度最大
     IPPort = "127.0.0.1:7897"  # todo 设置代理
-    saveFolder = "./Guangdong"  # todo 设置保存文件夹
+    saveFolder = "./MenYuan"  # todo 设置保存文件夹
 
     # ----------------------------------------------
     if os.path.exists(saveFolder) is False:
@@ -99,6 +99,8 @@ if __name__ == "__main__":
         f.write(cmd)
 
     proxies = {"http://": IPPort, "https://": IPPort} if IPPort else None
+
+    print("开始获取下载链接")
     result = requests.get("https://step.esa.int/auxdata/dem/SRTMGL1/", proxies=proxies)
 
     lls = createLonLat(min_range, max_range)  # 创建一系列经纬度表
