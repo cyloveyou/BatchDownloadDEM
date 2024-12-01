@@ -98,7 +98,7 @@ if __name__ == "__main__":
     with open(os.path.join(saveFolder, "stitchDem.sh"), "w") as f:
         f.write(cmd)
 
-    proxies = {"http://": IPPort, "https://": IPPort} if IPPort else None
+    proxies = {"http": IPPort, "https": IPPort} if IPPort else None
 
     print("开始获取下载链接")
     result = requests.get("https://step.esa.int/auxdata/dem/SRTMGL1/", proxies=proxies)
