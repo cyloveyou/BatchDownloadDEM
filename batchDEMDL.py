@@ -5,6 +5,7 @@
 # @CSDN    :https://blog.csdn.net/weixin_64989228?type=blog
 import os.path
 import shutil
+import sys
 import requests
 from tqdm import tqdm
 
@@ -85,6 +86,10 @@ def saveList(myList: list, savePath) -> None:
 
 if __name__ == "__main__":
     # 参数配置
+    lon1 = sys.argv[1]
+    lon2 = sys.argv[2]
+    lat1 = sys.argv[3]
+    lat2 = sys.argv[4]
     min_range = LonLat(100, 37)  # todo 设置经度最小和纬度最小
     max_range = LonLat(102, 38)  # todo 设置经度最大和纬度最大
     IPPort = "127.0.0.1:7897"  # todo 设置代理

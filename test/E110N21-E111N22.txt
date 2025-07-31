@@ -1,0 +1,4 @@
+http://step.esa.int/auxdata/dem/SRTMGL1/N21E110.SRTMGL1.hgt.zip
+http://step.esa.int/auxdata/dem/SRTMGL1/N22E110.SRTMGL1.hgt.zip
+http://step.esa.int/auxdata/dem/SRTMGL1/N21E111.SRTMGL1.hgt.zip
+http://step.esa.int/auxdata/dem/SRTMGL1/N22E111.SRTMGL1.hgt.zip

@@ -1,0 +1,1 @@
+dem.py -k -f -a stitch -b 21 22 110 111 -r -s 1 -c
